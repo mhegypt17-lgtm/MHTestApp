@@ -184,7 +184,15 @@
     function saveToStorage() {
         localStorage.setItem('orders', JSON.stringify(orders));
     }
-
+// === SEND TO GOOGLE SHEET ===
+function sendToSheet(orderData) {
+    const SHEET_URL = 'PASTE_YOUR_URL_HERE';  // ← Replace with your URL from Step 3
+    
+    fetch(SHEET_URL, {
+        method: 'POST',
+        body: JSON.stringify(orderData)
+    });
+}
     // ===== SAVE / UPDATE ORDER =====
     function saveOrder() {
         const name = document.getElementById('customerName').value.trim();
@@ -194,6 +202,16 @@
         const price = parseFloat(document.getElementById('price').value) || 0;
         const status = document.getElementById('status').value;
 
+        sendToSheet({
+    OrderID: 'ORD-' + Date.now(),
+    Source: document.getElementById('YOUR_SOURCE_FIELD_ID').value,
+    Customer: document.getElementById('YOUR_NAME_FIELD_ID').value,
+    Phone: document.getElementById('YOUR_PHONE_FIELD_ID').value,
+    Mobile: document.getElementById('YOUR_MOBILE_FIELD_ID').value,
+    Address: document.getElementById('YOUR_ADDRESS_FIELD_ID').value,
+    Products: 'YOUR_PRODUCTS_STRING',
+    Comments: document.getElementById('YOUR_COMMENTS_FIELD_ID').value
+});
         if (!name || !product || quantity <= 0 || price <= 0) {
             alert('Please fill in all fields correctly.');
             return;
