@@ -186,7 +186,7 @@
     }
 // === SEND TO GOOGLE SHEET ===
 function sendToSheet(orderData) {
-    const SHEET_URL = 'PASTE_YOUR_URL_HERE';  // ← Replace with your URL from Step 3
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyPGdq7qNyTaVHilzYh2iwHqpZ--c3CRLIFWmlZCN9iyP6vAiUabIVipoR1-2q3bEbdrg/exec';  // ← Replace with your URL from Step 3
     
     fetch(SHEET_URL, {
         method: 'POST',
@@ -202,16 +202,16 @@ function sendToSheet(orderData) {
         const price = parseFloat(document.getElementById('price').value) || 0;
         const status = document.getElementById('status').value;
 
-        sendToSheet({
-    OrderID: 'ORD-' + Date.now(),
-    Source: document.getElementById('YOUR_SOURCE_FIELD_ID').value,
-    Customer: document.getElementById('YOUR_NAME_FIELD_ID').value,
-    Phone: document.getElementById('YOUR_PHONE_FIELD_ID').value,
-    Mobile: document.getElementById('YOUR_MOBILE_FIELD_ID').value,
-    Address: document.getElementById('YOUR_ADDRESS_FIELD_ID').value,
-    Products: 'YOUR_PRODUCTS_STRING',
-    Comments: document.getElementById('YOUR_COMMENTS_FIELD_ID').value
-});
+     sendToSheet({
+            OrderID: 'ORD-' + Date.now(),
+            Source: status,
+            Customer: name,
+            Phone: phone,
+            Product: product,
+            Quantity: quantity,
+            Price: price,
+            Comments: ''
+        });
         if (!name || !product || quantity <= 0 || price <= 0) {
             alert('Please fill in all fields correctly.');
             return;
