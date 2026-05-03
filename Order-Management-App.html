@@ -184,15 +184,7 @@
     function saveToStorage() {
         localStorage.setItem('orders', JSON.stringify(orders));
     }
-// === SEND TO GOOGLE SHEET ===
-function sendToSheet(orderData) {
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyPGdq7qNyTaVHilzYh2iwHqpZ--c3CRLIFWmlZCN9iyP6vAiUabIVipoR1-2q3bEbdrg/exec';  // ← Replace with your URL from Step 3
-    
-    fetch(SHEET_URL, {
-        method: 'POST',
-        body: JSON.stringify(orderData)
-    });
-}
+
     // ===== SAVE / UPDATE ORDER =====
     function saveOrder() {
         const name = document.getElementById('customerName').value.trim();
@@ -202,16 +194,6 @@ function sendToSheet(orderData) {
         const price = parseFloat(document.getElementById('price').value) || 0;
         const status = document.getElementById('status').value;
 
-     sendToSheet({
-            OrderID: 'ORD-' + Date.now(),
-            Source: status,
-            Customer: name,
-            Phone: phone,
-            Product: product,
-            Quantity: quantity,
-            Price: price,
-            Comments: ''
-        });
         if (!name || !product || quantity <= 0 || price <= 0) {
             alert('Please fill in all fields correctly.');
             return;
