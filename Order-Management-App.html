@@ -780,6 +780,17 @@ function removeProductItem(id) {
   document.getElementById(id).remove();
 }
 
+// ============================================================
+// === GOOGLE SHEETS INTEGRATION (ADDITION #1) ===
+// ============================================================
+function sendToSheet(orderData) {
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyPGdq7qNyTaVHilzYh2iwHqpZ--c3CRLIFWmlZCN9iyP6vAiUabIVipoR1-2q3bEbdrg/exec';  // <-- Replace with your Google Script URL from Step 3
+  fetch(SHEET_URL, {
+    method: 'POST',
+    body: JSON.stringify(orderData)
+  });
+}
+
 // Create Order
 function createOrder() {
   const source = document.getElementById('source').value;
@@ -831,6 +842,21 @@ function createOrder() {
 
   orders.unshift(order);
   localStorage.setItem('orders', JSON.stringify(orders));
+
+  // ============================================================
+  // === SEND TO GOOGLE SHEET (ADDITION #2) ===
+  // ============================================================
+  const productsString = products.map(p => p.name + ' x' + p.qty + ' @€' + p.price.toFixed(2)).join(', ');
+  sendToSheet({
+    OrderID: order.id,
+    Source: source,
+    Customer: name,
+    Phone: phone,
+    Mobile: mobile,
+    Address: address,
+    Products: productsString,
+    Comments: orderComment
+  });
 
   // Reset form
   document.getElementById('source').value = '';
